@@ -432,6 +432,7 @@
         <li><a href="#">Mess</a></li>
         <li><a href="#">Login</a></li>
         <li><a href="#">Register</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
 
 </div>
@@ -439,93 +440,10 @@
 
 </nav>
 
-<!-- HERO -->
 
-<section class="hero">
+{% block content %}
+{% endblock %}
 
-```
-<div class="hero-content">
-
-    <h1>
-        Smart Hostel & Mess Management System
-    </h1>
-
-    <p>
-        Streamline room allocation, mess management,
-        complaint handling and student services
-        through one modern platform.
-    </p>
-
-    <a href="#" class="btn">
-        Get Started
-    </a>
-
-</div>
-
-<div class="hero-image">
-    <div class="floating-card"></div>
-</div>
-```
-
-</section>
-
-<!-- FEATURES -->
-
-<section class="features">
-
-```
-<h2 class="section-title">
-    Core Features
-</h2>
-
-<div class="feature-grid">
-
-    <div class="feature-card">
-        <h3>Room Booking</h3>
-        <p>Browse available rooms and submit booking requests online.</p>
-    </div>
-
-    <div class="feature-card">
-        <h3>Mess Management</h3>
-        <p>View daily menus and stay updated with meal schedules.</p>
-    </div>
-
-    <div class="feature-card">
-        <h3>Complaint Tracking</h3>
-        <p>Raise and track hostel complaints in real time.</p>
-    </div>
-
-</div>
-```
-
-</section>
-
-<!-- NEWSLETTER -->
-
-<section class="newsletter">
-
-```
-<div class="newsletter-box">
-
-    <h2>Stay Updated</h2>
-
-    <p>
-        Receive hostel announcements, room updates
-        and mess notifications.
-    </p>
-
-    <input type="email" placeholder="Enter Email">
-
-    <br><br>
-
-    <button class="btn">
-        Subscribe
-    </button>
-
-</div>
-```
-
-</section>
 
 <footer>
     © 2026 HostelHub | Smart Campus Living

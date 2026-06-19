@@ -1,38 +1,34 @@
 from django import forms
 from .models import User
 
-# class RegisterForm(forms.ModelForm):
+class RegisterForm(forms.ModelForm):
 
-# ```
-# password = forms.CharField(
-#     widget=forms.PasswordInput()
-# )
+    password = forms.CharField(
+        widget=forms.PasswordInput()
+    )
 
-# confirm_password = forms.CharField(
-#     widget=forms.PasswordInput()
-# )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput()
+    )
 
-# class Meta:
-#     model = User
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'phone',
+            'password'
+        ]
 
-#     fields = [
-#         'username',
-#         'email',
-#         'phone',
-#         'password'
-#     ]
+    def clean(self):
+        cleaned_data = super().clean()
 
-# def clean(self):
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
 
-#     cleaned_data = super().clean()
+        if password != confirm_password:
+            raise forms.ValidationError(
+                "Passwords do not match"
+            )
 
-#     password = cleaned_data.get("password")
-#     confirm_password = cleaned_data.get("confirm_password")
-
-#     if password != confirm_password:
-#         raise forms.ValidationError(
-#             "Passwords do not match"
-#         )
-
-#     return cleaned_data
-# ```
+        return cleaned_data
