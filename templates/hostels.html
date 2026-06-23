@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+    .hostels-section{
+    padding:80px 8%;
+}
+
+.page-title{
+    text-align:center;
+    margin-bottom:40px;
+
+    font-size:3rem;
+
+    text-shadow:
+    0 0 15px var(--accent-primary);
+}
+
+.hostel-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+    gap:30px;
+}
+
+.hostel-card{
+
+    background:rgba(255,255,255,.05);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    border-radius:25px;
+
+    padding:30px;
+
+    transition:.4s;
+}
+
+.hostel-card:hover{
+
+    transform:
+    translateY(-10px);
+
+    box-shadow:
+    0 0 30px rgba(138,43,226,.4);
+
+    border-color:
+    var(--accent-primary);
+}
+
+.hostel-card h2{
+    margin-bottom:15px;
+}
+
+.hostel-card p{
+    margin-bottom:10px;
+    color:var(--text-secondary);
+}
+
+.view-btn{
+
+    display:inline-block;
+
+    margin-top:15px;
+
+    padding:12px 24px;
+
+    border-radius:50px;
+
+    text-decoration:none;
+
+    color:white;
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-secondary)
+    );
+
+    transition:.4s;
+}
+
+.view-btn:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:
+    0 0 20px var(--accent-primary);
+}
+
+</style>
+
+<section class="hostels-section">
+
+    <h1 class="page-title">
+        Available Hostels
+    </h1>
+
+    <div class="hostel-grid">
+
+        {% for item in hostel_data %}
+
+        <div class="hostel-card">
+
+            <h2>
+                {{ item.hostel.hostel_name }}
+            </h2>
+
+            <p>
+                Hostel Type:
+                {{ item.hostel.hostel_type }}
+            </p>
+
+            <p>
+                Total Rooms:
+                {{ item.total_rooms }}
+            </p>
+
+            <p>
+                Available Rooms:
+                {{ item.available_rooms }}
+            </p>
+
+            <a
+                href="#"
+                class="view-btn"
+            >
+                View Rooms
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

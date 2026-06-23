@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path("",include("accounts.urls")),
+    path('', include('hostels.urls')),
 ]
 
 if settings.DEBUG:
