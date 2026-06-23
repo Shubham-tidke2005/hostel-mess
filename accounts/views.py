@@ -103,12 +103,16 @@ def dashboard_view(request):
     complaints = Complaint.objects.filter(
         student=user
     )
+    my_booking = RoomBooking.objects.filter(
+        student=request.user
+    ).order_by("-id").first()
 
     context = {
         "my_room": my_room,
         "available_rooms": available_rooms,
         "today_menu": today_menu,
         "complaints": complaints,
+        "my_booking": my_booking,
     }
 
     return render(

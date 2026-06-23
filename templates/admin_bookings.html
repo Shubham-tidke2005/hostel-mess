@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .booking-section{
+    padding:80px 8%;
+}
+
+.booking-table{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:15px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.approve-btn{
+    background:green;
+    color:white;
+    padding:8px 15px;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.reject-btn{
+    background:red;
+    color:white;
+    padding:8px 15px;
+    text-decoration:none;
+    border-radius:8px;
+}
+</style>
+
+<section class="booking-section">
+
+    <h1 class="page-title">
+
+        Room Booking Requests
+
+    </h1>
+
+    <div class="booking-table">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Student</th>
+                    <th>Hostel</th>
+                    <th>Room</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for booking in bookings %}
+
+                <tr>
+
+                    <td>
+                        {{ booking.student.username }}
+                    </td>
+
+                    <td>
+                        {{ booking.room.hostel.hostel_name }}
+                    </td>
+
+                    <td>
+                        {{ booking.room.room_number }}
+                    </td>
+
+                    <td>
+                        {{ booking.status }}
+                    </td>
+
+                    <td>
+
+                        {% if booking.status == "Pending" %}
+
+                        <a
+                        href="{% url 'approve_booking' booking.id %}"
+                        class="approve-btn">
+
+                            Approve
+
+                        </a>
+
+                        <a
+                        href="{% url 'reject_booking' booking.id %}"
+                        class="reject-btn">
+
+                            Reject
+
+                        </a>
+
+                        {% else %}
+
+                            No Action
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -16,7 +16,7 @@ class Room(models.Model):
     )
 
     room_number = models.CharField(max_length=10)
-    room_type = models.CharField(max_length=20)
+    room_type = models.CharField(max_length=20,default="Double")
     capacity = models.IntegerField()
 
     def __str__(self):

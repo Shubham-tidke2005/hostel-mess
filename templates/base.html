@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hostel & Mess Management System</title>
 
-```
+
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -409,8 +409,33 @@
             height:280px;
         }
     }
+
+    .logo{
+    font-size:1.7rem;
+    font-weight:700;
+    color:white;
+    text-decoration:none;
+
+    text-shadow:
+    0 0 15px var(--accent-primary),
+    0 0 30px var(--accent-primary);
+}
+
+.messages-container{
+    width:90%;
+    margin:20px auto;
+}
+
+.message{
+    background:rgba(138,43,226,.15);
+    border:1px solid rgba(138,43,226,.4);
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:10px;
+}
+
 </style>
-```
+
 
 </head>
 <body>
@@ -420,25 +445,87 @@
 <nav class="navbar">
     <div class="nav-container">
 
-```
-    <div class="logo">
-        HostelHub
-    </div>
+
+    <a href="{% url 'home' %}" class="logo">
+    HostelHub
+    </a>
 
     <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="{% url 'hostel_list' %}">Hostels</a></li>
-        <li><a href="#">Rooms</a></li>
-        <li><a href="#">Mess</a></li>
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Register</a></li>
-        <li><a href="{% url 'logout' %}">Logout</a></li>
-    </ul>
+
+    <li>
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+    </li>
+
+    <li>
+        <a href="{% url 'hostel_list' %}">
+            Hostels
+        </a>
+    </li>
+
+    {% if request.user.is_authenticated %}
+
+        <li>
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'my_room' %}">
+                My Room
+            </a>
+        </li>
+
+        {% if request.user.is_staff %}
+
+        <li>
+            <a href="{% url 'admin_bookings' %}">
+                Booking Requests
+            </a>
+        </li>
+
+        {% endif %}
+
+        <li>
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+        </li>
+
+    {% else %}
+
+        <li>
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'register' %}">
+                Register
+            </a>
+        </li>
+
+    {% endif %}
+
+</ul>
 
 </div>
-```
 
 </nav>
+{% if messages %}
+<div class="messages-container">
+
+    {% for message in messages %}
+        <div class="message">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+</div>
+{% endif %}
 
 
 {% block content %}

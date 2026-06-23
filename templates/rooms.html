@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .rooms-section{
+    padding:80px 8%;
+}
+
+.room-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(300px,1fr));
+
+    gap:25px;
+}
+
+.room-card{
+
+    background:
+    rgba(255,255,255,.05);
+
+    backdrop-filter:
+    blur(15px);
+
+    border:
+    1px solid rgba(255,255,255,.1);
+
+    border-radius:
+    20px;
+
+    padding:
+    25px;
+
+    transition:.3s;
+}
+
+.room-card:hover{
+
+    transform:
+    translateY(-5px);
+
+    box-shadow:
+    0 0 20px rgba(138,43,226,.4);
+}
+
+.book-btn{
+
+    display:inline-block;
+
+    margin-top:15px;
+
+    padding:10px 20px;
+
+    border-radius:30px;
+
+    text-decoration:none;
+
+    color:white;
+
+    background:
+    linear-gradient(
+    135deg,
+    #8A2BE2,
+    #00FFFF
+    );
+}
+
+.full-btn{
+
+    margin-top:15px;
+
+    padding:10px 20px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:#555;
+
+    color:white;
+}
+</style>
+
+<section class="rooms-section">
+
+    <h1 class="page-title">
+
+        {{ hostel.hostel_name }}
+
+    </h1>
+
+    <div class="room-grid">
+
+        {% for item in room_data %}
+
+        <div class="room-card">
+
+            <h2>
+
+                Room
+                {{ item.room.room_number }}
+
+            </h2>
+
+            <p>
+
+                Capacity :
+                {{ item.room.capacity }}
+
+            </p>
+
+            <p>
+
+                Available Beds :
+                {{ item.available_beds }}
+
+            </p>
+
+            <p>
+
+                Room Type :
+                {{ item.room.room_type }}
+
+            </p>
+
+            {% if item.available_beds > 0 %}
+
+            <a
+            href="{% url 'book_room' item.room.id %}"
+            class="book-btn">
+
+                Book Room
+
+            </a>
+
+            {% else %}
+
+            <button
+            class="full-btn">
+
+                Full
+
+            </button>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

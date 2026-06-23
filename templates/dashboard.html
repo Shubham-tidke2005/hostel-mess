@@ -54,30 +54,33 @@
 
         <div class="card">
 
-            <h2>My Room</h2>
+            <h2>Booking Status</h2>
 
-            {% if my_room %}
+            {% if my_booking %}
 
-                <p>
-                    Hostel :
-                    {{ my_room.room.hostel.hostel_name }}
-                </p>
+            <p>
+                Room :
+                {{ my_booking.room.room_number }}
+            </p>
 
-                <p>
-                    Room :
-                    {{ my_room.room.room_number }}
-                </p>
+        <p>
+            Status :
+            {{ my_booking.status }}
+        </p>
 
-                <p>
-                    Status :
-                    {{ my_room.status }}
-                </p>
+        {% if my_booking.status == "Pending" %}
+            <p>⏳ Waiting for Admin Approval</p>
+        {% elif my_booking.status == "Approved" %}
+            <p>✅ Room Allocated</p>
+        {% elif my_booking.status == "Rejected" %}
+            <p>❌ Request Rejected</p>
+        {% endif %}
 
-            {% else %}
+    {% else %}
 
-                <p>No room allocated yet.</p>
+        <p>No booking request submitted.</p>
 
-            {% endif %}
+    {% endif %}
 
         </div>
 

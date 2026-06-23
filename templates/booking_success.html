@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .success-section{
+
+    min-height:70vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+.success-card{
+
+    background:rgba(255,255,255,.05);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:25px;
+
+    padding:50px;
+
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.success-card h1{
+    margin-bottom:15px;
+}
+
+.dashboard-btn{
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    padding:12px 25px;
+
+    border-radius:30px;
+
+    text-decoration:none;
+
+    color:white;
+
+    background:
+    linear-gradient(
+    135deg,
+    #8A2BE2,
+    #00FFFF
+    );
+}
+</style>
+
+<section class="success-section">
+
+    <div class="success-card">
+
+        <h1>
+            ✅ Request Submitted
+        </h1>
+
+        <p>
+            Waiting for Approval
+        </p>
+
+        <a
+        href="{% url 'dashboard' %}"
+        class="dashboard-btn">
+
+            Go To Dashboard
+
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .my-room-section{
+    padding:80px 8%;
+}
+
+.room-card{
+
+    max-width:700px;
+
+    margin:auto;
+
+    background:rgba(255,255,255,.05);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    border-radius:25px;
+
+    padding:35px;
+
+    transition:.3s;
+}
+
+.room-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+    0 0 25px rgba(138,43,226,.4);
+}
+
+.room-card h2{
+    margin-bottom:20px;
+}
+
+.room-card p{
+    margin-bottom:12px;
+}
+
+.approved{
+    color:#00ff88;
+    font-weight:bold;
+}
+</style>
+
+<section class="my-room-section">
+
+    <h1 class="page-title">
+        My Room
+    </h1>
+
+    {% if booking %}
+
+    <div class="room-card">
+
+        <h2>
+            Room Allocation Details
+        </h2>
+
+        <p>
+            <strong>Hostel:</strong>
+            {{ booking.room.hostel.hostel_name }}
+        </p>
+
+        <p>
+            <strong>Room:</strong>
+            {{ booking.room.room_number }}
+        </p>
+
+        <p>
+            <strong>Room Type:</strong>
+            {{ booking.room.room_type }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            <span class="approved">
+                {{ booking.status }}
+            </span>
+        </p>
+
+    </div>
+
+    {% else %}
+
+    <div class="room-card">
+
+        <h2>No Room Allocated</h2>
+
+        <p>
+            You have not been assigned a room yet.
+        </p>
+
+        <p>
+            Please submit a booking request and wait for approval.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}
