@@ -1,536 +1,368 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hostel & Mess Management System</title>
 
-
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-    /* ==========================
-       ROOT VARIABLES
-    ========================== */
-    :root{
-        --bg-primary:#0A0A1E;
-        --bg-secondary:#161632;
+/* ==========================================================================
+   1. ROOT VARIABLES & THEME CONFIG
+   ========================================================================== */
+:root {
+    --bg-primary: #0A0A1E;
+    --bg-secondary: #161632;
+    --accent-primary: #8A2BE2;
+    --accent-secondary: #00FFFF;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0A0CB;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.12);
+}
 
-        --accent-primary:#8A2BE2;
-        --accent-secondary:#00FFFF;
+/* Base Reset & Viewport Lock */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        --text-primary:#FFFFFF;
-        --text-secondary:#A0A0CB;
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scaling bugs */
+}
 
-        --glass-bg:rgba(255,255,255,0.05);
-        --glass-border:rgba(255,255,255,0.12);
-    }
+html {
+    scroll-behavior: smooth;
+}
 
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-    }
-
-    html{
-        scroll-behavior:smooth;
-    }
-
-    body{
-        font-family:'Poppins',sans-serif;
-        background:
-        radial-gradient(circle at top right,
-        rgba(138,43,226,0.25),
-        transparent 30%),
-
-        radial-gradient(circle at bottom left,
-        rgba(0,255,255,0.15),
-        transparent 35%),
-
+body {
+    font-family: 'Poppins', sans-serif;
+    background: 
+        radial-gradient(circle at top right, rgba(138, 43, 226, 0.2), transparent 35%),
+        radial-gradient(circle at bottom left, rgba(0, 255, 255, 0.1), transparent 40%),
         var(--bg-primary);
-
-        color:var(--text-primary);
-        overflow-x:hidden;
-    }
-
-    /* ==========================
-       CUSTOM SCROLLBAR
-    ========================== */
-
-    ::-webkit-scrollbar{
-        width:10px;
-    }
-
-    ::-webkit-scrollbar-track{
-        background:#111126;
-    }
-
-    ::-webkit-scrollbar-thumb{
-        background:linear-gradient(
-            var(--accent-primary),
-            var(--accent-secondary)
-        );
-        border-radius:20px;
-    }
-
-    /* ==========================
-       NAVBAR
-    ========================== */
-
-    .navbar{
-        position:sticky;
-        top:0;
-        z-index:1000;
-
-        backdrop-filter:blur(18px);
-
-        background:rgba(10,10,30,0.65);
-
-        border-bottom:1px solid rgba(255,255,255,0.08);
-
-        padding:18px 8%;
-    }
-
-    .nav-container{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-    }
-
-    .logo{
-        font-size:1.7rem;
-        font-weight:700;
-        color:white;
-
-        text-shadow:
-        0 0 15px var(--accent-primary),
-        0 0 30px var(--accent-primary);
-    }
-
-    .nav-links{
-        display:flex;
-        gap:35px;
-        list-style:none;
-    }
-
-    .nav-links a{
-        text-decoration:none;
-        color:white;
-        position:relative;
-        transition:.3s;
-    }
-
-    .nav-links a::after{
-        content:'';
-        position:absolute;
-        left:50%;
-        bottom:-6px;
-
-        width:0;
-        height:2px;
-
-        background:var(--accent-secondary);
-
-        transform:translateX(-50%);
-        transition:.4s;
-    }
-
-    .nav-links a:hover::after{
-        width:100%;
-    }
-
-    .nav-links a:hover{
-        color:var(--accent-secondary);
-    }
-
-    /* ==========================
-       BUTTONS
-    ========================== */
-
-    .btn{
-        padding:12px 28px;
-        border:none;
-        border-radius:50px;
-        cursor:pointer;
-        font-weight:600;
-
-        color:white;
-
-        background:
-        linear-gradient(
-        135deg,
-        var(--accent-primary),
-        var(--accent-secondary)
-        );
-
-        transition:.4s ease;
-
-        box-shadow:
-        0 0 20px rgba(138,43,226,.35);
-
-        text-decoration:none;
-    }
-
-    .btn:hover{
-        transform:translateY(-4px) scale(1.03);
-
-        box-shadow:
-        0 0 20px var(--accent-primary),
-        0 0 40px var(--accent-primary),
-        0 0 80px var(--accent-secondary);
-    }
-
-    /* ==========================
-       HERO SECTION
-    ========================== */
-
-    .hero{
-        min-height:90vh;
-
-        display:grid;
-        grid-template-columns:1fr 1fr;
-
-        align-items:center;
-        gap:50px;
-
-        padding:70px 8%;
-    }
-
-    .hero-content{
-        animation:fadeIn 1s ease forwards;
-    }
-
-    .hero-content h1{
-        font-size:4rem;
-        line-height:1.2;
-
-        text-shadow:
-        0 0 15px rgba(138,43,226,.8);
-    }
-
-    .hero-content p{
-        margin:25px 0;
-        color:var(--text-secondary);
-        line-height:1.8;
-    }
-
-    .hero-image{
-        display:flex;
-        justify-content:center;
-    }
-
-    .floating-card{
-        width:350px;
-        height:350px;
-
-        border-radius:30px;
-
-        background:var(--glass-bg);
-
-        backdrop-filter:blur(25px);
-
-        border:1px solid var(--glass-border);
-
-        animation:float 5s ease-in-out infinite;
-
-        box-shadow:
-        0 0 30px rgba(138,43,226,.35);
-    }
-
-    /* ==========================
-       FEATURES
-    ========================== */
-
-    .features{
-        padding:100px 8%;
-    }
-
-    .section-title{
-        text-align:center;
-        margin-bottom:60px;
-
-        font-size:2.5rem;
-
-        text-shadow:
-        0 0 15px var(--accent-primary);
-    }
-
-    .feature-grid{
-        display:grid;
-        grid-template-columns:repeat(3,1fr);
-        gap:30px;
-    }
-
-    .feature-card{
-        background:var(--glass-bg);
-
-        backdrop-filter:blur(15px);
-
-        border:1px solid var(--glass-border);
-
-        border-radius:24px;
-
-        padding:35px;
-
-        transition:.4s ease;
-
-        will-change:transform;
-    }
-
-    .feature-card:hover{
-        transform:
-        translateY(-10px)
-        scale(1.02);
-
-        border-color:var(--accent-primary);
-
-        box-shadow:
-        0 0 30px rgba(138,43,226,.4);
-    }
-
-    .feature-card h3{
-        margin-bottom:15px;
-    }
-
-    .feature-card p{
-        color:var(--text-secondary);
-    }
-
-    /* ==========================
-       NEWSLETTER
-    ========================== */
-
-    .newsletter{
-        padding:100px 8%;
-    }
-
-    .newsletter-box{
-        text-align:center;
-
-        padding:60px;
-
-        background:var(--glass-bg);
-
-        border:1px solid var(--glass-border);
-
-        border-radius:30px;
-
-        backdrop-filter:blur(15px);
-    }
-
-    .newsletter-box p{
-        color:var(--text-secondary);
-        margin:20px 0;
-    }
-
-    .newsletter-box input{
-        width:100%;
-        max-width:450px;
-
-        padding:15px;
-
-        border:none;
-        outline:none;
-
-        border-radius:50px;
-
-        background:#1b1b3b;
-        color:white;
-    }
-
-    /* ==========================
-       FOOTER
-    ========================== */
-
-    footer{
-        text-align:center;
-        padding:30px;
-        color:var(--text-secondary);
-    }
-
-    /* ==========================
-       ANIMATIONS
-    ========================== */
-
-    @keyframes float{
-        0%,100%{
-            transform:translateY(0);
-        }
-        50%{
-            transform:translateY(-20px);
-        }
-    }
-
-    @keyframes fadeIn{
-        from{
-            opacity:0;
-            transform:translateY(30px);
-        }
-        to{
-            opacity:1;
-            transform:translateY(0);
-        }
-    }
-
-    /* ==========================
-       RESPONSIVE
-    ========================== */
-
-    @media(max-width:992px){
-
-        .hero{
-            grid-template-columns:1fr;
-            text-align:center;
-        }
-
-        .feature-grid{
-            grid-template-columns:repeat(2,1fr);
-        }
-    }
-
-    @media(max-width:768px){
-
-        .nav-links{
-            display:none;
-        }
-
-        .hero-content h1{
-            font-size:2.6rem;
-        }
-
-        .feature-grid{
-            grid-template-columns:1fr;
-        }
-
-        .floating-card{
-            width:280px;
-            height:280px;
-        }
-    }
-
-    .logo{
-    font-size:1.7rem;
-    font-weight:700;
-    color:white;
-    text-decoration:none;
-
-    text-shadow:
-    0 0 15px var(--accent-primary),
-    0 0 30px var(--accent-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.messages-container{
-    width:90%;
-    margin:20px auto;
+/* Ensure content blocks expand cleanly */
+main, [block="content"] {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
 }
 
-.message{
-    background:rgba(138,43,226,.15);
-    border:1px solid rgba(138,43,226,.4);
-    padding:15px;
-    border-radius:12px;
-    margin-bottom:10px;
+/* ==========================================================================
+   2. CUSTOM SCROLLBAR
+   ========================================================================== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #070716;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--accent-primary), var(--accent-secondary));
+    border-radius: 10px;
 }
 
+/* ==========================================================================
+   3. NAVBAR & DESKTOP NAVIGATION
+   ========================================================================== */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 2000;
+    background: rgba(10, 10, 30, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    padding: 16px 8%;
+    width: 100%;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.logo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
+    transition: text-shadow 0.3s ease;
+}
+
+.logo:hover {
+    text-shadow: 0 0 20px rgba(138, 43, 226, 0.85), 0 0 8px var(--accent-secondary);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+}
+
+.nav-links li {
+    list-style: none;
+}
+
+.nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 10px 16px;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Underline Animation (Desktop Only) */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-secondary);
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--text-primary);
+    background: rgba(138, 43, 226, 0.1);
+}
+
+.nav-links a:hover::after {
+    width: 50%;
+}
+
+/* Native desktop state overrides for interactive tokens */
+#menu-toggle, .hamburger {
+    display: none;
+}
+
+/* ==========================================================================
+   4. SYSTEM NOTIFICATION CONTAINER
+   ========================================================================== */
+.messages-container {
+    width: 84%;
+    max-width: 1400px;
+    margin: 24px auto 0 auto;
+}
+
+.message {
+    background: rgba(22, 22, 50, 0.6);
+    border-left: 4px solid var(--accent-primary);
+    border-top: 1px solid var(--glass-border);
+    border-right: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   5. PREMIUM BALANCED FOOTER Layout
+   ========================================================================== */
+footer {
+    text-align: center;
+    padding: 35px 20px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    letter-spacing: 0.8px;
+    background: rgba(6, 6, 18, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: auto;
+    width: 100%;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE BREAKPOINTS & MOBILE FIXES
+   ========================================================================== */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 14px 6%;
+    }
+
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        z-index: 2500;
+        padding: 8px;
+    }
+
+    .hamburger span {
+        width: 24px;
+        height: 2.5px;
+        background: var(--text-primary);
+        border-radius: 4px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+    }
+
+    /* Animate Hamburger Lines to an 'X' when checked */
+    #menu-toggle:checked + .hamburger span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+        background: var(--accent-secondary);
+    }
+
+    #menu-toggle:checked + .hamburger span:nth-child(2) {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    #menu-toggle:checked + .hamburger span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -6px);
+        background: var(--accent-secondary);
+    }
+
+    /* Mobile Sidebar Panel Structure */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 280px;
+        height: 100vh;
+        
+        /* Forces the drawer entirely off-screen via hardware acceleration */
+        transform: translateX(100%);
+        will-change: transform;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        /* Modern UI Glassmorphism Layer */
+        background: rgba(10, 10, 30, 0.98);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: -10px 0 35px rgba(0, 0, 0, 0.6);
+        z-index: 1500;
+
+        /* Alignment Framework */
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 110px 20px 40px 20px; 
+        gap: 12px;
+        
+        /* Inline Scroll Security Configuration */
+        overflow-y: auto; 
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Bring drawer onto active viewport safely when trigger is checked */
+    #menu-toggle:checked ~ .nav-links {
+        transform: translateX(0);
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    /* Transform mobile list items into centered buttons */
+    .nav-links a {
+        display: block;
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        text-align: center;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover, 
+    .nav-links a:active {
+        color: var(--accent-secondary);
+        background: rgba(138, 43, 226, 0.16);
+        border-color: rgba(0, 255, 255, 0.25);
+        box-shadow: 0 0 15px rgba(138, 43, 226, 0.25);
+    }
+
+    /* Drop desktop tracking markers */
+    .nav-links a::after {
+        display: none !important;
+    }
+}
 </style>
-
-
 </head>
 <body>
-
-<!-- NAVBAR -->
 
 <nav class="navbar">
     <div class="nav-container">
 
-
-    <a href="{% url 'home' %}" class="logo">
-    HostelHub
-    </a>
-
-    <ul class="nav-links">
-
-    <li>
-        <a href="{% url 'home' %}">
-            Home
+        <a href="{% url 'home' %}" class="logo">
+            HostelHub
         </a>
-    </li>
 
-    <li>
-        <a href="{% url 'hostel_list' %}">
-            Hostels
-        </a>
-    </li>
+        <input type="checkbox" id="menu-toggle">
 
-    {% if request.user.is_authenticated %}
+        <label for="menu-toggle" class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
 
-        <li>
-            <a href="{% url 'dashboard' %}">
-                Dashboard
-            </a>
-        </li>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'hostel_list' %}">Hostels</a></li>
 
-        <li>
-            <a href="{% url 'my_room' %}">
-                My Room
-            </a>
-        </li>
+            {% if request.user.is_authenticated %}
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'my_room' %}">My Room</a></li>
+                {% if request.user.is_staff %}
+                <li><a href="{% url 'admin_bookings' %}">Booking Requests</a></li>
+                {% endif %}
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+        </ul>
 
-        {% if request.user.is_staff %}
-
-        <li>
-            <a href="{% url 'admin_bookings' %}">
-                Booking Requests
-            </a>
-        </li>
-
-        {% endif %}
-
-        <li>
-            <a href="{% url 'logout' %}">
-                Logout
-            </a>
-        </li>
-
-    {% else %}
-
-        <li>
-            <a href="{% url 'login' %}">
-                Login
-            </a>
-        </li>
-
-        <li>
-            <a href="{% url 'register' %}">
-                Register
-            </a>
-        </li>
-
-    {% endif %}
-
-</ul>
-
-</div>
-
+    </div>
 </nav>
+
 {% if messages %}
 <div class="messages-container">
-
     {% for message in messages %}
         <div class="message">
             {{ message }}
         </div>
     {% endfor %}
-
 </div>
 {% endif %}
 
-
 {% block content %}
 {% endblock %}
-
 
 <footer>
     © 2026 HostelHub | Smart Campus Living
