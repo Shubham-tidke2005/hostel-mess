@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+######################################################################################
 
 class Hostel(models.Model):
     hostel_name = models.CharField(max_length=100)
