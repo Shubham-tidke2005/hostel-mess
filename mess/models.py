@@ -1,6 +1,6 @@
 from django.db import models
 from hostels.models import Hostel
-######################################################################################
+
 
 class Menu(models.Model):
 
