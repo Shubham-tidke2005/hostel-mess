@@ -25,6 +25,7 @@ urlpatterns = [
     path('', home, name='home'),
     path("",include("accounts.urls")),
     path('', include('hostels.urls')),
+    path("hostellers/",include("hostellers.urls")),
 ]
 
 if settings.DEBUG:

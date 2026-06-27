@@ -4,6 +4,11 @@ from django.conf import settings
 
 
 class User(AbstractUser):
+    ROLE_CHOICES = (
+        ("student", "Student"),
+        ("hosteller", "Hosteller"),
+        ("admin", "Admin"),
+    )
     role = models.CharField(
         max_length=20,
         default='student'

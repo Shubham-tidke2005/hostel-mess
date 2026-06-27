@@ -331,22 +331,158 @@ footer {
             <span></span>
         </label>
 
-        <ul class="nav-links">
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'hostel_list' %}">Hostels</a></li>
+       <ul class="nav-links">
 
-            {% if request.user.is_authenticated %}
-                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li><a href="{% url 'my_room' %}">My Room</a></li>
-                {% if request.user.is_staff %}
-                <li><a href="{% url 'admin_bookings' %}">Booking Requests</a></li>
-                {% endif %}
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
-            {% endif %}
-        </ul>
+    <!-- Common -->
+    <li>
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+    </li>
+
+    {% if request.user.is_authenticated %}
+
+        <!-- ===================== -->
+        <!-- STUDENT NAVIGATION -->
+        <!-- ===================== -->
+
+        {% if request.user.role == "student" %}
+
+            <li>
+                <a href="{% url 'dashboard' %}">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'hostel_list' %}">
+                    Hostels
+                </a>
+            </li>
+
+            
+
+            <li>
+                <a href="{% url 'my_room' %}">
+                    My Room
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'logout' %}">
+                    Logout
+                </a>
+            </li>
+
+        <!-- ===================== -->
+        <!-- HOSTELLER NAVIGATION -->
+        <!-- ===================== -->
+
+        {% elif request.user.role == "hosteller" %}
+
+            <li>
+                <a href="{% url 'hosteller_dashboard' %}">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    Rooms
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    Booking Requests
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    Mess Menu
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    Complaints
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'logout' %}">
+                    Logout
+                </a>
+            </li>
+
+        <!-- ===================== -->
+        <!-- ADMIN NAVIGATION -->
+        <!-- ===================== -->
+
+        {% elif request.user.role == "admin" %}
+
+            <li>
+                <a href="{% url 'admin_dashboard' %}">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    Hostels
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    Hostellers
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    Students
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    Reports
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'logout' %}">
+                    Logout
+                </a>
+            </li>
+
+        {% endif %}
+
+    {% else %}
+
+        <li>
+            <a href="{% url 'hostel_list' %}">
+                Hostels
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'register' %}">
+                Register
+            </a>
+        </li>
+
+    {% endif %}
+
+</ul>
 
     </div>
 </nav>

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+<h2>Hostellers</h2>
+
+<table>
+
+<tr>
+
+    <th>Name</th>
+
+    <th>Hostel</th>
+
+</tr>
+
+{% for hosteller in hostellers %}
+
+<tr>
+
+    <td>
+
+        {{ hosteller.user.username }}
+
+    </td>
+
+    <td>
+
+        {{ hosteller.hostel.hostel_name }}
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<a href="{% url 'add_hosteller' %}">
+
+    Add Hosteller
+
+</a>
+
+</div>
+
+{% endblock %}

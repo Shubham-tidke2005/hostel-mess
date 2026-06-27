@@ -10,6 +10,15 @@ from mess.models import Menu
 from accounts.models import Complaint
 from datetime import date
 
+
+@login_required
+def admin_dashboard(request):
+
+    return render(
+        request,
+        "admin_dashboard.html"
+    )
+    
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -62,7 +71,11 @@ def login_view(request):
             if user.role == "student":
                 return redirect("dashboard")
 
-            return redirect("admin:index")
+            elif user.role == "hosteller":
+                return redirect("hosteller_dashboard")
+
+            elif user.role == "admin":
+                return redirect("admin_dashboard")
 
         else:
 

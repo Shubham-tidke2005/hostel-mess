@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts',
     'hostels',
     'mess',
+    "hostellers",
 ]
 
 MIDDLEWARE = [
