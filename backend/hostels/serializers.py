@@ -1,0 +1,24 @@
+from rest_framework import serializers
+from .models import Hostel
+
+
+class HostelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Hostel
+        fields = [
+            "id",
+            "hostel_name",
+            "hostel_type",
+            "address",
+            "total_rooms",
+            "hostel_image",
+            "created_at",
+            "updated_at",
+        ]
+
+        read_only_fields = [
+            "id",
+            "created_at",
+            "updated_at",
+        ]
