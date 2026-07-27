@@ -31,6 +31,15 @@ urlpatterns = [
     path("api/rooms/", include("rooms.urls")),
     path("api/bookings/", include("bookings.urls")),
     path("api/mess/", include("mess.urls")),
+    
+    #student
+    path("api/students/", include("students.urls")),
+    
+    #hostel
+    path("api/hostels/", include("hostels.urls")),
+    
+    #rooms
+    path("api/rooms/", include("rooms.urls")),
 ]
 
 # Serve media files in development
