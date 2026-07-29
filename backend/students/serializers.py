@@ -26,3 +26,30 @@ class StudentSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
+    def validate_phone(self, value):
+        """
+        Validate phone number.
+        """
+        if not value.isdigit():
+            raise serializers.ValidationError(
+                "Phone number should contain only digits."
+            )
+
+        if len(value) != 10:
+            raise serializers.ValidationError(
+                "Phone number must be exactly 10 digits."
+            )
+
+        return value
+
+    def validate_year(self, value):
+        """
+        Validate academic year.
+        """
+        if value < 1 or value > 4:
+            raise serializers.ValidationError(
+                "Year must be between 1 and 4."
+            )
+
+        return value

@@ -30,9 +30,16 @@ ALLOWED_HOSTS = []
 
 CORS_ALLOW_CREDENTIALS = True
 
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Hostel & Mess Management API",
+    "DESCRIPTION": "REST API for Hostel & Mess Management System built using Django REST Framework.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
+
 SIMPLE_JWT = {
 
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
 
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 
@@ -44,18 +51,15 @@ SIMPLE_JWT = {
 }
 
 REST_FRAMEWORK = {
-
     "DEFAULT_AUTHENTICATION_CLASSES": (
-
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-
     ),
 
     "DEFAULT_PERMISSION_CLASSES": (
-
         "rest_framework.permissions.IsAuthenticated",
-
     ),
+
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # Application definition
@@ -82,6 +86,9 @@ INSTALLED_APPS = [
     'rooms',
     'bookings',
     'mess',
+    
+    #documentation
+    "drf_spectacular",
 ]
 
 
