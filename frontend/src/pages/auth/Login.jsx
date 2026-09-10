@@ -1,173 +1,213 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogIn, Lock, User } from "lucide-react";
+import {
+    LockKeyhole,
+    User,
+    Eye,
+    EyeOff,
+    LogIn,
+} from "lucide-react";
 import toast from "react-hot-toast";
 
 import { loginUser } from "../../services/authService";
-import { useAuth } from "../../context/AuthContext";
 
 function Login() {
     const navigate = useNavigate();
-    const { login } = useAuth();
 
-    const [formData, setFormData] = useState({
-        username: "",
-        password: "",
-    });
-
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!username.trim() || !password) {
+            toast.error("Please enter username and password.");
+            return;
+        }
+
         try {
             setLoading(true);
 
-            const data = await loginUser(formData);
+            console.log("Logging in...");
 
-            login(data);
+            const data = await loginUser({
+                username: username.trim(),
+                password: password,
+            });
 
-            toast.success("Login Successful!");
+            console.log("Login response:", data);
 
-            navigate("/dashboard");
-        } catch (error) {
-            toast.error(
-                error.response?.data?.detail ||
-                "Invalid Username or Password"
+            // Check whether backend returned tokens
+            if (!data.access || !data.refresh) {
+                toast.error("Login response does not contain JWT tokens.");
+                console.error("Invalid login response:", data);
+                return;
+            }
+
+            // Save JWT tokens
+            localStorage.setItem("access_token", data.access);
+            localStorage.setItem("refresh_token", data.refresh);
+
+            console.log(
+                "Access token saved:",
+                localStorage.getItem("access_token")
             );
+
+            toast.success("Login successful!");
+
+            // Redirect to dashboard
+            navigate("/dashboard", { replace: true });
+
+        } catch (error) {
+            console.error("Login Error:", error);
+
+            console.error("Backend response:", error.response?.data);
+
+            const message =
+                error.response?.data?.detail ||
+                "Invalid username or password.";
+
+            toast.error(message);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="flex min-h-screen bg-[#F8F9FA]">
+        <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center px-4 py-8">
+            <div className="w-full max-w-md">
 
-            {/* Left Section */}
+                {/* Logo */}
+                <div className="mb-8 text-center">
+                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#2563EB] text-white shadow-lg">
+                        <LockKeyhole size={28} />
+                    </div>
 
-            <div className="hidden w-1/2 items-center justify-center bg-[#2563EB] lg:flex">
-
-                <div className="max-w-md text-white">
-
-                    <h1 className="mb-4 text-5xl font-bold">
-                        Hostel Management System
+                    <h1 className="text-3xl font-bold text-[#1A1A1A]">
+                        Hostel Management
                     </h1>
 
-                    <p className="text-lg opacity-90">
-                        Manage students, rooms, hostels, bookings,
-                        and mess menu from one place.
+                    <p className="mt-2 text-[#6C757D]">
+                        Sign in to your account
                     </p>
-
                 </div>
 
-            </div>
-
-            {/* Right Section */}
-
-            <div className="flex flex-1 items-center justify-center p-6">
-
-                <div className="w-full max-w-md rounded-3xl border border-gray-200 bg-white p-8 shadow-xl">
-
-                    <div className="mb-8 text-center">
-
-                        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#2563EB] text-white">
-
-                            <LogIn size={30} />
-
-                        </div>
-
-                        <h2 className="text-3xl font-bold text-[#1A1A1A]">
-                            Welcome Back
-                        </h2>
-
-                        <p className="mt-2 text-[#6C757D]">
-                            Login to continue
-                        </p>
-
-                    </div>
+                {/* Card */}
+                <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
 
                     <form
                         onSubmit={handleSubmit}
                         className="space-y-5"
                     >
 
+                        {/* Username */}
                         <div>
-
-                            <label className="mb-2 block text-sm font-medium">
+                            <label
+                                htmlFor="username"
+                                className="mb-2 block text-sm font-semibold text-[#1A1A1A]"
+                            >
                                 Username
                             </label>
 
                             <div className="relative">
-
                                 <User
-                                    className="absolute left-3 top-3 text-gray-400"
-                                    size={18}
+                                    size={19}
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6C757D]"
                                 />
 
                                 <input
+                                    id="username"
                                     type="text"
-                                    name="username"
-                                    value={formData.username}
-                                    onChange={handleChange}
+                                    value={username}
+                                    onChange={(e) =>
+                                        setUsername(e.target.value)
+                                    }
                                     placeholder="Enter username"
-                                    required
-                                    className="w-full rounded-xl border border-gray-300 py-3 pl-10 pr-4 focus:border-[#2563EB] focus:outline-none"
+                                    autoComplete="username"
+                                    className="w-full rounded-xl border border-gray-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-[#2563EB] focus:ring-4 focus:ring-blue-100"
                                 />
-
                             </div>
-
                         </div>
 
+                        {/* Password */}
                         <div>
-
-                            <label className="mb-2 block text-sm font-medium">
+                            <label
+                                htmlFor="password"
+                                className="mb-2 block text-sm font-semibold text-[#1A1A1A]"
+                            >
                                 Password
                             </label>
 
                             <div className="relative">
-
-                                <Lock
-                                    className="absolute left-3 top-3 text-gray-400"
-                                    size={18}
+                                <LockKeyhole
+                                    size={19}
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6C757D]"
                                 />
 
                                 <input
-                                    type="password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
+                                    id="password"
+                                    type={
+                                        showPassword
+                                            ? "text"
+                                            : "password"
+                                    }
+                                    value={password}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
                                     placeholder="Enter password"
-                                    required
-                                    className="w-full rounded-xl border border-gray-300 py-3 pl-10 pr-4 focus:border-[#2563EB] focus:outline-none"
+                                    autoComplete="current-password"
+                                    className="w-full rounded-xl border border-gray-300 py-3 pl-10 pr-12 text-sm outline-none transition focus:border-[#2563EB] focus:ring-4 focus:ring-blue-100"
                                 />
 
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6C757D] hover:text-[#1A1A1A]"
+                                >
+                                    {showPassword ? (
+                                        <EyeOff size={19} />
+                                    ) : (
+                                        <Eye size={19} />
+                                    )}
+                                </button>
                             </div>
-
                         </div>
 
+                        {/* Submit */}
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full rounded-xl bg-[#2563EB] py-3 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50"
+                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2563EB] py-3.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                            {loading ? "Signing In..." : "Login"}
+                            {loading ? (
+                                <>
+                                    <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                                    Signing in...
+                                </>
+                            ) : (
+                                <>
+                                    <LogIn size={19} />
+                                    Sign In
+                                </>
+                            )}
                         </button>
-
                     </form>
-
                 </div>
 
+                <p className="mt-6 text-center text-xs text-[#6C757D]">
+                    © {new Date().getFullYear()} Hostel & Mess Management
+                    System
+                </p>
             </div>
-
         </div>
     );
 }
 
 export default Login;
+

@@ -1,18 +1,23 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// Layouts
 import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
-
-// Route Protection
 import ProtectedRoute from "./ProtectedRoute";
 
-// Pages
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 
 import StudentList from "../pages/students/StudentList";
+import StudentDetails from "../pages/students/StudentDetails";
+import AddStudent from "../pages/students/AddStudent";
+import EditStudent from "../pages/students/EditStudent";
+
 import HostelList from "../pages/hostels/HostelList";
+import AddHostel from "../pages/hostels/AddHostel";
+import EditHostel from "../pages/hostels/EditHostel";
+import HostelDetails from "../pages/hostels/HostelDetails";
+
 import RoomList from "../pages/rooms/RoomList";
 import BookingList from "../pages/bookings/BookingList";
 import MenuList from "../pages/mess/MenuList";
@@ -21,74 +26,98 @@ import Profile from "../pages/profile/Profile";
 import NotFound from "../pages/errors/NotFound";
 
 function AppRoutes() {
-  return (
-    <BrowserRouter>
-      <Routes>
+    return (
+        <BrowserRouter>
+            <Routes>
+                {/* Public Routes */}
+                <Route element={<AuthLayout />}>
+                    <Route path="/" element={<Login />} />
+                </Route>
 
-        {/* Public Routes */}
+                {/* Protected Routes */}
+                <Route
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    {/* Dashboard */}
+                    <Route
+                        path="/dashboard"
+                        element={<Dashboard />}
+                    />
 
-        <Route element={<AuthLayout />}>
-          <Route
-            path="/"
-            element={<Login />}
-          />
-        </Route>
+                    {/* Student Management */}
+                    <Route
+                        path="/students"
+                        element={<StudentList />}
+                    />
+                    <Route
+                        path="/students/add"
+                        element={<AddStudent />}
+                    />
+                    <Route
+                        path="/students/:id"
+                        element={<StudentDetails />}
+                    />
+                    <Route
+                        path="/students/:id/edit"
+                        element={<EditStudent />}
+                    />
 
-        {/* Protected Routes */}
+                    {/* Hostel Management */}
+                    <Route
+                        path="/hostels"
+                        element={<HostelList />}
+                    />
+                    <Route
+                        path="/hostels/add"
+                        element={<AddHostel />}
+                    />
+                    <Route
+                        path="/hostels/:id"
+                        element={<HostelDetails />}
+                    />
+                    <Route
+                        path="/hostels/:id/edit"
+                        element={<EditHostel />}
+                    />
 
-        <Route
-          element={
-            <ProtectedRoute>
-              <MainLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route
-            path="/dashboard"
-            element={<Dashboard />}
-          />
+                    {/* Room Management */}
+                    <Route
+                        path="/rooms"
+                        element={<RoomList />}
+                    />
 
-          <Route
-            path="/students"
-            element={<StudentList />}
-          />
+                    {/* Booking Management */}
+                    <Route
+                        path="/bookings"
+                        element={<BookingList />}
+                    />
 
-          <Route
-            path="/hostels"
-            element={<HostelList />}
-          />
+                    {/* Mess Management */}
+                    <Route
+                        path="/mess"
+                        element={<MenuList />}
+                    />
 
-          <Route
-            path="/rooms"
-            element={<RoomList />}
-          />
+                    {/* Profile */}
+                    <Route
+                        path="/profile"
+                        element={<Profile />}
+                    />
+                </Route>
 
-          <Route
-            path="/bookings"
-            element={<BookingList />}
-          />
-
-          <Route
-            path="/mess"
-            element={<MenuList />}
-          />
-
-          <Route
-            path="/profile"
-            element={<Profile />}
-          />
-        </Route>
-
-        {/* 404 Page */}
-
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
-
-      </Routes>
-    </BrowserRouter>
-  );
+                {/* 404 */}
+                <Route
+                    path="*"
+                    element={<NotFound />}
+                />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default AppRoutes;
+

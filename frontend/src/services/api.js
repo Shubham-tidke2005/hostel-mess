@@ -1,21 +1,18 @@
+
 import axios from "axios";
 
-// Create Axios instance
 const api = axios.create({
-    baseURL: "http://127.0.0.1:8000/api",
-    timeout: 20000,
-    headers: {
-        "Content-Type": "application/json",
-    },
+    baseURL:
+        import.meta.env.VITE_API_BASE_URL ||
+        "http://127.0.0.1:8000/api",
 });
 
-// Request Interceptor
 api.interceptors.request.use(
     (config) => {
-        const accessToken = localStorage.getItem("accessToken");
+        const token = localStorage.getItem("access_token");
 
-        if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`;
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
         }
 
         return config;
@@ -26,3 +23,4 @@ api.interceptors.request.use(
 );
 
 export default api;
+
