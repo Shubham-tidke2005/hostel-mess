@@ -1,10 +1,9 @@
-
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
 class IsAdmin(BasePermission):
     """
-    Allows access only to admin (staff) users.
+    Allows access only to admin/staff users.
     """
 
     message = "Only administrators can perform this action."
@@ -36,16 +35,15 @@ class IsAdminOrReadOnly(BasePermission):
     message = "Only administrators can modify this resource."
 
     def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False
 
-        # Allow GET, HEAD and OPTIONS requests
+        # GET, HEAD, OPTIONS
         if request.method in SAFE_METHODS:
-            return request.user.is_authenticated
+            return True
 
-        # Allow POST, PUT, PATCH and DELETE only for admins
-        return (
-            request.user.is_authenticated
-            and request.user.is_staff
-        )
+        # POST, PUT, PATCH, DELETE
+        return request.user.is_staff
 
 
 class IsAdminOrOwnStudent(BasePermission):
@@ -61,8 +59,6 @@ class IsAdminOrOwnStudent(BasePermission):
     message = "You do not have permission to access this student."
 
     def has_permission(self, request, view):
-
-        # User must be authenticated
         if not request.user.is_authenticated:
             return False
 
@@ -70,19 +66,18 @@ class IsAdminOrOwnStudent(BasePermission):
         if request.user.is_staff:
             return True
 
-        # Students cannot create students
+        # Students cannot create student records
         if request.method == "POST":
             return False
 
-        # Students cannot delete students
+        # Students cannot delete student records
         if request.method == "DELETE":
             return False
 
-        # Students can GET, PUT and PATCH
+        # Students can GET / PUT / PATCH
         return True
 
     def has_object_permission(self, request, view, obj):
-
         # Admin can access any student
         if request.user.is_staff:
             return True
@@ -90,3 +85,25 @@ class IsAdminOrOwnStudent(BasePermission):
         # Student can access only their own record
         return obj.user == request.user
 
+
+class IsBookingOwnerOrAdmin(BasePermission):
+    """
+    Admin:
+        Can access all bookings.
+
+    Student:
+        Can access only their own bookings.
+    """
+
+    message = "You do not have permission to access this booking."
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        # Admin can access any booking
+        if request.user.is_staff:
+            return True
+
+        # Student can access only their own booking
+        return obj.student.user == request.user

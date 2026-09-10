@@ -1,123 +1,247 @@
+import { Routes, Route, Navigate } from "react-router-dom";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import AuthLayout from "../layouts/AuthLayout";
-import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "./ProtectedRoute";
+import MainLayout from "../layouts/MainLayout";
 
+// ==============================
+// Auth
+// ==============================
 import Login from "../pages/auth/Login";
+
+// ==============================
+// Dashboard
+// ==============================
 import Dashboard from "../pages/dashboard/Dashboard";
 
+// ==============================
+// Students
+// ==============================
 import StudentList from "../pages/students/StudentList";
-import StudentDetails from "../pages/students/StudentDetails";
 import AddStudent from "../pages/students/AddStudent";
 import EditStudent from "../pages/students/EditStudent";
+import StudentDetails from "../pages/students/StudentDetails";
 
+// ==============================
+// Hostels
+// ==============================
 import HostelList from "../pages/hostels/HostelList";
 import AddHostel from "../pages/hostels/AddHostel";
 import EditHostel from "../pages/hostels/EditHostel";
 import HostelDetails from "../pages/hostels/HostelDetails";
 
+// ==============================
+// Rooms
+// ==============================
 import RoomList from "../pages/rooms/RoomList";
-import BookingList from "../pages/bookings/BookingList";
-import MenuList from "../pages/mess/MenuList";
-import Profile from "../pages/profile/Profile";
+import AddRoom from "../pages/rooms/AddRoom";
+import EditRoom from "../pages/rooms/EditRoom";
+import RoomDetails from "../pages/rooms/RoomDetails";
 
-import NotFound from "../pages/errors/NotFound";
+// ==============================
+// Bookings
+// ==============================
+import BookingList from "../pages/bookings/BookingList";
+import CreateBooking from "../pages/bookings/CreateBooking";
+import BookingDetails from "../pages/bookings/BookingDetails";
+import BookingApproval from "../pages/bookings/BookingApproval";
+
+// ==============================
+// Mess
+// ==============================
+import MenuList from "../pages/mess/MenuList";
+import AddMenu from "../pages/mess/AddMenu";
+import EditMenu from "../pages/mess/EditMenu";
+import TodayMenu from "../pages/mess/TodayMenu";
+
+
+
+import EditProfile from "../pages/profile/EditProfile";
+import ChangePassword from "../pages/profile/ChangePassword";
+
+// ==============================
+// Profile
+// ==============================
+import Profile from "../pages/profile/Profile";
 
 function AppRoutes() {
     return (
-        <BrowserRouter>
-            <Routes>
-                {/* Public Routes */}
-                <Route element={<AuthLayout />}>
-                    <Route path="/" element={<Login />} />
-                </Route>
+        <Routes>
+            {/* =====================================
+                PUBLIC ROUTES
+            ===================================== */}
 
-                {/* Protected Routes */}
+            <Route path="/" element={<Login />} />
+
+            {/* =====================================
+                PROTECTED ROUTES
+            ===================================== */}
+
+            <Route
+                element={
+                    <ProtectedRoute>
+                        <MainLayout />
+                    </ProtectedRoute>
+                }
+            >
+                {/* ================================
+                    Dashboard
+                ================================= */}
+                <Route path="/dashboard" element={<Dashboard />} />
+
+                {/* ================================
+                    Students
+                ================================= */}
                 <Route
-                    element={
-                        <ProtectedRoute>
-                            <MainLayout />
-                        </ProtectedRoute>
-                    }
-                >
-                    {/* Dashboard */}
-                    <Route
-                        path="/dashboard"
-                        element={<Dashboard />}
-                    />
+                    path="/students"
+                    element={<StudentList />}
+                />
 
-                    {/* Student Management */}
-                    <Route
-                        path="/students"
-                        element={<StudentList />}
-                    />
-                    <Route
-                        path="/students/add"
-                        element={<AddStudent />}
-                    />
-                    <Route
-                        path="/students/:id"
-                        element={<StudentDetails />}
-                    />
-                    <Route
-                        path="/students/:id/edit"
-                        element={<EditStudent />}
-                    />
+                <Route
+                    path="/students/add"
+                    element={<AddStudent />}
+                />
 
-                    {/* Hostel Management */}
-                    <Route
-                        path="/hostels"
-                        element={<HostelList />}
-                    />
-                    <Route
-                        path="/hostels/add"
-                        element={<AddHostel />}
-                    />
-                    <Route
-                        path="/hostels/:id"
-                        element={<HostelDetails />}
-                    />
-                    <Route
-                        path="/hostels/:id/edit"
-                        element={<EditHostel />}
-                    />
+                <Route
+                    path="/students/:id/edit"
+                    element={<EditStudent />}
+                />
 
-                    {/* Room Management */}
-                    <Route
-                        path="/rooms"
-                        element={<RoomList />}
-                    />
+                <Route
+                    path="/students/:id"
+                    element={<StudentDetails />}
+                />
 
-                    {/* Booking Management */}
-                    <Route
-                        path="/bookings"
-                        element={<BookingList />}
-                    />
+                {/* ================================
+                    Hostels
+                ================================= */}
+                <Route
+                    path="/hostels"
+                    element={<HostelList />}
+                />
 
-                    {/* Mess Management */}
-                    <Route
-                        path="/mess"
-                        element={<MenuList />}
-                    />
+                <Route
+                    path="/hostels/add"
+                    element={<AddHostel />}
+                />
 
-                    {/* Profile */}
-                    <Route
-                        path="/profile"
-                        element={<Profile />}
-                    />
-                </Route>
+                <Route
+                    path="/hostels/:id/edit"
+                    element={<EditHostel />}
+                />
 
-                {/* 404 */}
+                <Route
+                    path="/hostels/:id"
+                    element={<HostelDetails />}
+                />
+
+                {/* ================================
+                    Rooms
+                ================================= */}
+                <Route
+                    path="/rooms"
+                    element={<RoomList />}
+                />
+
+                <Route
+                    path="/rooms/add"
+                    element={<AddRoom />}
+                />
+
+                <Route
+                    path="/rooms/:id/edit"
+                    element={<EditRoom />}
+                />
+
+                <Route
+                    path="/rooms/:id"
+                    element={<RoomDetails />}
+                />
+
+                {/* ================================
+                    Bookings
+                ================================= */}
+                <Route
+                    path="/bookings"
+                    element={<BookingList />}
+                />
+
+                <Route
+                    path="/bookings/create"
+                    element={<CreateBooking />}
+                />
+
+                <Route
+                    path="/bookings/:id/approval"
+                    element={<BookingApproval />}
+                />
+
+                <Route
+                    path="/bookings/:id"
+                    element={<BookingDetails />}
+                />
+
+                {/* ================================
+                    Mess
+                ================================= */}
+                <Route
+                    path="/mess"
+                    element={<MenuList />}
+                />
+
+                <Route
+                    path="/mess/add"
+                    element={<AddMenu />}
+                />
+
+                <Route
+                    path="/mess/today"
+                    element={<TodayMenu />}
+                />
+
+                <Route
+                    path="/mess/:id/edit"
+                    element={<EditMenu />}
+                />
+
+                {/* ================================
+                    Profile
+                ================================= */}
+                <Route
+                    path="/profile"
+                    element={<Profile />}
+                />
+
+                {/* ================================
+                    Unknown protected route
+                ================================= */}
                 <Route
                     path="*"
-                    element={<NotFound />}
+                    element={<Navigate to="/dashboard" replace />}
                 />
-            </Routes>
-        </BrowserRouter>
+            </Route>
+
+            {/* =====================================
+                UNKNOWN PUBLIC ROUTE
+            ===================================== */}
+
+            <Route
+                path="*"
+                element={<Navigate to="/" replace />}
+            />
+
+            <Route path="/profile" element={<Profile />} />
+
+<Route
+    path="/profile/edit"
+    element={<EditProfile />}
+/>
+
+<Route
+    path="/profile/change-password"
+    element={<ChangePassword />}
+/>
+        </Routes>
     );
 }
 
 export default AppRoutes;
-

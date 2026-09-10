@@ -12,7 +12,11 @@ import {
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
-import { deleteRoom, getRooms } from "../../services/roomService";
+import {
+    deleteRoom,
+    getRooms,
+} from "../../services/roomService";
+
 import { getHostels } from "../../services/hostelService";
 
 function RoomList() {
@@ -39,13 +43,14 @@ function RoomList() {
 
             const data = await getRooms();
 
-            if (Array.isArray(data)) {
-                setRooms(data);
-            } else {
-                setRooms(data?.results || []);
-            }
+            setRooms(
+                Array.isArray(data)
+                    ? data
+                    : data?.results || []
+            );
         } catch (err) {
             console.error("Fetch Rooms Error:", err);
+
             setError(
                 err?.response?.data?.detail ||
                     "Unable to load rooms."
@@ -59,23 +64,31 @@ function RoomList() {
         try {
             const data = await getHostels();
 
-            if (Array.isArray(data)) {
-                setHostels(data);
-            } else {
-                setHostels(data?.results || []);
-            }
+            setHostels(
+                Array.isArray(data)
+                    ? data
+                    : data?.results || []
+            );
         } catch (err) {
             console.error("Fetch Hostels Error:", err);
         }
     };
 
     const getHostelName = (room) => {
-        if (room?.hostel && typeof room.hostel === "object") {
-            return room.hostel.hostel_name || "Unknown Hostel";
+        if (
+            room?.hostel &&
+            typeof room.hostel === "object"
+        ) {
+            return (
+                room.hostel.hostel_name ||
+                "Unknown Hostel"
+            );
         }
 
         const hostel = hostels.find(
-            (item) => String(item.id) === String(room?.hostel)
+            (item) =>
+                String(item.id) ===
+                String(room?.hostel)
         );
 
         return hostel?.hostel_name || "Unknown Hostel";
@@ -83,7 +96,9 @@ function RoomList() {
 
     const getAvailableBeds = (room) => {
         const capacity = Number(room?.capacity || 0);
-        const occupied = Number(room?.occupied_beds || 0);
+        const occupied = Number(
+            room?.occupied_beds || 0
+        );
 
         return Math.max(capacity - occupied, 0);
     };
@@ -100,14 +115,19 @@ function RoomList() {
                             floor !== ""
                     )
             ),
-        ].sort((a, b) => Number(a) - Number(b));
+        ].sort(
+            (a, b) => Number(a) - Number(b)
+        );
     }, [rooms]);
 
     const filteredRooms = useMemo(() => {
-        const search = searchTerm.trim().toLowerCase();
+        const search = searchTerm
+            .trim()
+            .toLowerCase();
 
         return rooms.filter((room) => {
-            const hostelName = getHostelName(room).toLowerCase();
+            const hostelName =
+                getHostelName(room).toLowerCase();
 
             const matchesSearch =
                 !search ||
@@ -124,13 +144,16 @@ function RoomList() {
 
             const matchesHostel =
                 hostelFilter === "All" ||
-                String(room.hostel) === String(hostelFilter) ||
+                String(room.hostel) ===
+                    String(hostelFilter) ||
                 (typeof room.hostel === "object" &&
-                    String(room.hostel.id) === String(hostelFilter));
+                    String(room.hostel?.id) ===
+                        String(hostelFilter));
 
             const matchesFloor =
                 floorFilter === "All" ||
-                String(room.floor) === String(floorFilter);
+                String(room.floor) ===
+                    String(floorFilter);
 
             const matchesStatus =
                 statusFilter === "All" ||
@@ -168,7 +191,10 @@ function RoomList() {
         }
     };
 
-    const handleDelete = async (id, roomNumber) => {
+    const handleDelete = async (
+        id,
+        roomNumber
+    ) => {
         const confirmed = window.confirm(
             `Are you sure you want to delete Room ${roomNumber}? This action cannot be undone.`
         );
@@ -179,12 +205,19 @@ function RoomList() {
             await deleteRoom(id);
 
             setRooms((prevRooms) =>
-                prevRooms.filter((room) => room.id !== id)
+                prevRooms.filter(
+                    (room) => room.id !== id
+                )
             );
 
-            toast.success("Room deleted successfully.");
+            toast.success(
+                "Room deleted successfully."
+            );
         } catch (err) {
-            console.error("Delete Room Error:", err);
+            console.error(
+                "Delete Room Error:",
+                err
+            );
 
             const message =
                 err?.response?.data?.detail ||
@@ -209,7 +242,7 @@ function RoomList() {
                     <div className="h-5 w-96 max-w-full rounded bg-slate-100" />
                 </div>
 
-                <div className="rounded-2xl border border-slate-200 bg-white p-5">
+                <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                         <div className="h-12 rounded-xl bg-slate-100" />
                         <div className="h-12 rounded-xl bg-slate-100" />
@@ -222,7 +255,7 @@ function RoomList() {
                     {[1, 2, 3].map((item) => (
                         <div
                             key={item}
-                            className="rounded-2xl border border-slate-200 bg-white p-6"
+                            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
                         >
                             <div className="h-6 w-32 rounded bg-slate-200" />
                             <div className="mt-5 h-4 w-48 rounded bg-slate-100" />
@@ -273,7 +306,8 @@ function RoomList() {
                     </h1>
 
                     <p className="mt-2 text-[#6C757D]">
-                        Manage rooms, capacity, occupancy, and availability.
+                        Manage rooms, capacity,
+                        occupancy, and availability.
                     </p>
                 </div>
 
@@ -286,7 +320,7 @@ function RoomList() {
                 </Link>
             </div>
 
-            {/* Search & Filters */}
+            {/* Search + Filters */}
             <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     {/* Search */}
@@ -297,22 +331,28 @@ function RoomList() {
                             type="text"
                             value={searchTerm}
                             onChange={(event) =>
-                                setSearchTerm(event.target.value)
+                                setSearchTerm(
+                                    event.target.value
+                                )
                             }
                             placeholder="Search rooms..."
                             className="w-full rounded-xl border border-slate-200 bg-[#F8F9FA] py-3 pl-11 pr-4 text-sm text-[#1A1A1A] outline-none transition placeholder:text-slate-400 focus:border-[#2563EB] focus:bg-white focus:ring-2 focus:ring-blue-100"
                         />
                     </div>
 
-                    {/* Hostel */}
+                    {/* Hostel Filter */}
                     <select
                         value={hostelFilter}
                         onChange={(event) =>
-                            setHostelFilter(event.target.value)
+                            setHostelFilter(
+                                event.target.value
+                            )
                         }
                         className="rounded-xl border border-slate-200 bg-[#F8F9FA] px-4 py-3 text-sm text-[#1A1A1A] outline-none transition focus:border-[#2563EB] focus:bg-white focus:ring-2 focus:ring-blue-100"
                     >
-                        <option value="All">All Hostels</option>
+                        <option value="All">
+                            All Hostels
+                        </option>
 
                         {hostels.map((hostel) => (
                             <option
@@ -324,15 +364,19 @@ function RoomList() {
                         ))}
                     </select>
 
-                    {/* Floor */}
+                    {/* Floor Filter */}
                     <select
                         value={floorFilter}
                         onChange={(event) =>
-                            setFloorFilter(event.target.value)
+                            setFloorFilter(
+                                event.target.value
+                            )
                         }
                         className="rounded-xl border border-slate-200 bg-[#F8F9FA] px-4 py-3 text-sm text-[#1A1A1A] outline-none transition focus:border-[#2563EB] focus:bg-white focus:ring-2 focus:ring-blue-100"
                     >
-                        <option value="All">All Floors</option>
+                        <option value="All">
+                            All Floors
+                        </option>
 
                         {floors.map((floor) => (
                             <option
@@ -344,17 +388,25 @@ function RoomList() {
                         ))}
                     </select>
 
-                    {/* Status */}
+                    {/* Status Filter */}
                     <select
                         value={statusFilter}
                         onChange={(event) =>
-                            setStatusFilter(event.target.value)
+                            setStatusFilter(
+                                event.target.value
+                            )
                         }
                         className="rounded-xl border border-slate-200 bg-[#F8F9FA] px-4 py-3 text-sm text-[#1A1A1A] outline-none transition focus:border-[#2563EB] focus:bg-white focus:ring-2 focus:ring-blue-100"
                     >
-                        <option value="All">All Status</option>
-                        <option value="Available">Available</option>
-                        <option value="Full">Full</option>
+                        <option value="All">
+                            All Status
+                        </option>
+                        <option value="Available">
+                            Available
+                        </option>
+                        <option value="Full">
+                            Full
+                        </option>
                         <option value="Maintenance">
                             Maintenance
                         </option>
@@ -372,7 +424,9 @@ function RoomList() {
                         {filteredRooms.length}
                     </span>{" "}
                     room
-                    {filteredRooms.length !== 1 ? "s" : ""}
+                    {filteredRooms.length !== 1
+                        ? "s"
+                        : ""}
                 </p>
 
                 {(searchTerm ||
@@ -419,7 +473,6 @@ function RoomList() {
                     )}
                 </div>
             ) : (
-                /* Room Cards */
                 <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                     {filteredRooms.map((room) => {
                         const availableBeds =
@@ -430,24 +483,33 @@ function RoomList() {
                                 key={room.id}
                                 className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-md"
                             >
-                                {/* Top */}
+                                {/* Header */}
                                 <div className="flex items-start justify-between gap-4">
-                                    <div>
+                                    <div className="min-w-0">
                                         <div className="flex items-center gap-3">
-                                            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50">
+                                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50">
                                                 <DoorOpen className="h-5 w-5 text-[#2563EB]" />
                                             </div>
 
-                                            <div>
+                                            <div className="min-w-0">
                                                 <h2 className="text-xl font-bold text-[#1A1A1A]">
                                                     Room{" "}
-                                                    {room.room_number}
+                                                    {
+                                                        room.room_number
+                                                    }
                                                 </h2>
 
-                                                <p className="mt-0.5 text-sm text-[#6C757D]">
-                                                    {getHostelName(
+                                                <p
+                                                    className="truncate text-sm text-[#6C757D]"
+                                                    title={getHostelName(
                                                         room
                                                     )}
+                                                >
+                                                    {
+                                                        getHostelName(
+                                                            room
+                                                        )
+                                                    }
                                                 </p>
                                             </div>
                                         </div>
@@ -462,7 +524,7 @@ function RoomList() {
                                     </span>
                                 </div>
 
-                                {/* Room Info */}
+                                {/* Room Information */}
                                 <div className="mt-6 grid grid-cols-2 gap-3">
                                     <div className="rounded-xl bg-[#F8F9FA] p-4">
                                         <p className="text-xs font-medium text-[#6C757D]">
@@ -480,7 +542,9 @@ function RoomList() {
                                         </p>
 
                                         <p className="mt-1 text-lg font-bold text-[#1A1A1A]">
-                                            {room.capacity}
+                                            {
+                                                room.capacity
+                                            }
                                         </p>
                                     </div>
 
@@ -490,7 +554,9 @@ function RoomList() {
                                         </p>
 
                                         <p className="mt-1 text-lg font-bold text-[#1A1A1A]">
-                                            {room.occupied_beds}
+                                            {
+                                                room.occupied_beds
+                                            }
                                         </p>
                                     </div>
 
@@ -500,7 +566,9 @@ function RoomList() {
                                         </p>
 
                                         <p className="mt-1 text-lg font-bold text-[#2563EB]">
-                                            {availableBeds}
+                                            {
+                                                availableBeds
+                                            }
                                         </p>
                                     </div>
                                 </div>
